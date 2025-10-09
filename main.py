@@ -9,7 +9,7 @@ import time, math, random
 # The box is randomly oriented every 5 seconds proving that the PID controller can correct the heading fo the box no matter what forward angle is appleid
 
 # connect to graphics
-physicsClient = p.connect(p.DIRECT) # use p.GUI for graphical version, p.DIRECT for non-graphical version
+physicsClient = p.connect(p.DIRECT) 
 p.setAdditionalSearchPath(pybullet_data.getDataPath()) 
 
 # create wall properties
