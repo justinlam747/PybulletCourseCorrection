@@ -83,7 +83,8 @@ integral = 0
 
 # run sumulation for 5 seconds
 for i in range (5 * 240):
-    currentAngle = math.degrees(p.getEulerFromQuaternion(curOrn)[2])
+
+
     
     # step the simulation and sleep it to match real life
     p.stepSimulation()
@@ -93,17 +94,24 @@ for i in range (5 * 240):
     cubePos, cubeOrn = p.getBasePositionAndOrientation(boxId)
     velocity, angularVelocity = p.getBaseVelocity(boxId)
 
-    # random angle between 45 and 135 degrees 
-    # angle = math.pi/4 + (math.pi/2 * random.uniform(0,1))
-    angle = 3* math.pi/2
+    # Random angle between 45 and 135 degrees
+     
+    angle = math.pi/4 + (math.pi/2 * random.uniform(0,1))
+    
+    # # Extremes
 
+    # # 180 degree rotation
+    # angle = 3* math.pi/2
 
-
-
-    # # extremes
+    # # Left edge of fan
     # angle = math.pi/4
+
+    # # Right edge of fan
     # angle = 3 * math.pi/4
-   
+
+
+
+    # Randomize angle every 5~ seconds
     # Every 240 steps is around a second so every 24 steps is 0.1 seconds, due to steps being frequency based and not time based it is slightly off
     # I discovered 24 steps was around 1 second due to time.sleep called earlier, leading to a nice consistent reporting speed of "car" data
     if (i%240==0): 
@@ -115,9 +123,12 @@ for i in range (5 * 240):
         # randomize heading
         p.resetBasePositionAndOrientation(boxId, cubePos, p.getQuaternionFromEuler([0,0,angle]))
 
-    if (currentAngle < 45):
-        print("Current Angle:", currentAngle, " - Too Far Right")
-        
+    angleCheck = math.degrees(p.getEulerFromQuaternion(cubeOrn)[2])
+
+    # # fail safe to orient the box back to trajectory
+    # if (angleCheck < 45 or angleCheck > 135):
+    #     p.applyExternalTorque(boxId, -1, [0,0,500], p.WORLD_FRAME)
+
 
     # compute pid controller variables   
     error_x = cubePos[0]
