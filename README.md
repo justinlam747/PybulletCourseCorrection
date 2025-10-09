@@ -14,7 +14,7 @@
 
 ## How to Run
 
-To run the simulation, simply execute the main script:
+To run the simulation, run the main script:
 
 ```bash
 python main.py
