@@ -56,10 +56,10 @@ p.loadBullet("cooridorBullet.bullet")
 p.setGravity(0,0,-10)
 
 # loads a plane
-planeId = p.loadURDF("plane.urdf")
+planeId = p.loadURDF("plane.urdf",  globalScaling=6, basePosition=[0,0,0.1])
 
 # defines start position and orientation
-cubeStartPos = [0,0,0.3]
+cubeStartPos = [0,0,0.5]
 cubeStartOrientation = p.getQuaternionFromEuler([0,0,0])
 speed = 30
 
@@ -138,12 +138,14 @@ for i in range (5 * 240):
     # define the factor for torque
     u = Kp * error_x + Ki * integral + Kd * derivative 
 
+    k = 50
+
     # # basic bang-bang logic 
     # if (cubePos[0] > 0):
-    #     p.applyExternalTorque(boxId, -1, [0,0,u], p.WORLD_FRAME)
+    #     p.applyExternalTorque(boxId, -1, [0,0,k], p.WORLD_FRAME)
         
     # if (cubePos[0] < 0):
-    #     p.applyExternalTorque(boxId, -1, [0,0,-u], p.WORLD_FRAME)
+    #     p.applyExternalTorque(boxId, -1, [0,0,-k], p.WORLD_FRAME)
 
     # apply the torque based on pid-controller output 
     p.applyExternalTorque(boxId, -1, [0,0,u], p.WORLD_FRAME)
@@ -162,16 +164,21 @@ for i in range (5 * 240):
     # let the camera follow the box
     p.resetDebugVisualizerCamera(cameraDistance=5, cameraYaw=0, cameraPitch=-50, cameraTargetPosition=cubePos)
 
+   
+
     # debug line indicating travel direction 
     travelLine = p.addUserDebugLine(cubePos, [cubePos[0] + velocity[0], cubePos[1] + velocity[1], cubePos[2] + 0.1], [0,1,0], 2, 0, replaceItemUniqueId=travelLine_id)
 
     # draw a line in front of the box to show correct direction of travel
-    centerline = p.addUserDebugLine([0,0,0.1], [0,cubePos[1] + 30, 0.1], [1,0,0], 2, 0, replaceItemUniqueId=line_id)
+    centerline = p.addUserDebugLine([0,0,1], [0,cubePos[1] + 30, 1], [1,0,0], 2, 0, replaceItemUniqueId=line_id)
+
+    #  # first person pov
+    # p.resetDebugVisualizerCamera(cameraDistance=1, cameraYaw=0, cameraPitch=0, cameraTargetPosition=[cubePos[0], cubePos[1]+5, cubePos[2]])
 
     # update previous error
     prev_error_x = error_x
 
-    print()
+  
 
     
 
